@@ -1,5 +1,9 @@
-import secrets
+from neomodel import config, db
 
-# Генерация случайного ключа длиной 32 символа
-secret_key = secrets.token_hex(32)
-print(f"Ваш Secret Key: {secret_key}")
+config.DATABASE_URL = "bolt://neo4j:your_password@localhost:7687"
+
+try:
+    db.cypher_query("RETURN 1")
+    print("Connected to Neo4j!")
+except Exception as e:
+    print(f"Connection failed: {e}")

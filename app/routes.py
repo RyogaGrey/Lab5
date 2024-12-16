@@ -45,3 +45,14 @@ def delete_node_and_relationships(node_id: str):
     """
     db_connection().run(query, node_id=node_id)
     return {"message": f"Node {node_id} and its relationships deleted"}
+from app.database import db_connection
+
+@router.get("/nodes")
+def get_all_nodes():
+    with db_connection() as session:
+        query = """
+        MATCH (n) 
+        RETURN n.id AS id, labels(n) AS label
+        """
+        results = session.run(query)
+        return [record for record in results]
